@@ -28,4 +28,7 @@ router.post('/login' ,[
     body('password').not().isEmpty().withMessage("กรณาใส่พาสเวิร์ด")
 ],userController.login)
 
+//delete by id
+router.delete('/delete'+'/:id',userController.deleteByID)
+
 module.exports = router;

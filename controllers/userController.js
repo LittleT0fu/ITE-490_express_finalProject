@@ -108,3 +108,26 @@ exports.login = async (req,res,next) => {
     next(error)
   }
 }
+
+exports.deleteByID = async ( req , res ,next )=> {
+  try {
+    const { id } = req.params
+    console.log(id)
+    const user = await User.deleteOne({
+        _id: id,
+      });
+    if(user.deletedCount === 0 ){
+        throw new Error("ไม่พบข้อมูลผู้ใช้งาน / ไม่พบข้อมูลผู้ใช้งาน")
+    }else{
+        res.status(200).json({
+            message: "ลบข้อมูลเรียบร้อย",
+          });
+    }
+
+
+} catch (error) {
+  res.status(400).json({
+    message: "เกิดข้อผิดพลาด " + error.message,
+  });
+}
+ }
