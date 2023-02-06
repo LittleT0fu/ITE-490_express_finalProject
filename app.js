@@ -12,8 +12,10 @@ var config = require('./config/index')
 //import mongoose
 var mongoose = require('mongoose')
 
+//router
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var brandRouter = require('./routes/brand');
 
 var app = express();
 
@@ -37,6 +39,7 @@ app.use(passport.initialize());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/brand',brandRouter);
 
 
 app.use(errorHandler)
