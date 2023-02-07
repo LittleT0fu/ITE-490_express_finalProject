@@ -43,7 +43,7 @@ exports.add = async (req ,res ,next) =>{
       throw error
     }
 
-
+      //save
       let brand = new Brand({
         brand_name : brand_name
       });
@@ -52,13 +52,31 @@ exports.add = async (req ,res ,next) =>{
       res.status(201).json({
         messege: "ลงทะเบียนเรียบร้อย",
       });
-
-
     
   } catch (error) {
     next(error);
   }
 }
 
+
+exports.destroy = async (req, res, next) => {
+  try {
+      const {id} = req.params
+
+      const deletedBrand = await Brand.deleteOne({_id: id})
+      if(deletedBrand.deletedCount === 0){
+        const error = new Error("ไม่พบข้อมูลผู้ใช้งาน")
+        error.statusCode = 404
+        throw error
+      }else{
+        res.status(200).json({
+          message: "ลบข้อมูลเรียบร้อย",
+        });
+      }
+
+     } catch (error) {
+      next(error);
+     }
+};
 
   

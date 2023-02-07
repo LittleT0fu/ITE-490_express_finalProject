@@ -3,7 +3,7 @@ var router = express.Router();
 const userController = require('../controllers/userController')
 const { body } = require('express-validator');
 
-
+//middel ware
 const passportJWT = require('../middleWare/passportJWT')
 const checkAdmin = require('../middleWare/checkAdmin')
 
@@ -13,6 +13,8 @@ const checkAdmin = require('../middleWare/checkAdmin')
 // });
 
 router.get('/', userController.index);
+
+//get all user
 router.get('/get',[passportJWT.isLogin , checkAdmin.isAdmin] , userController.show);
 
 //register
@@ -29,6 +31,9 @@ router.post('/login' ,[
 ],userController.login)
 
 //delete by id
-router.delete('/delete'+'/:id',userController.deleteByID)
+router.delete('/delete'+'/:id',[passportJWT.isLogin,checkAdmin.isAdmin],userController.deleteByID)
+
+//role changer
+router.put('/role'+'/:id',[passportJWT.isLogin,checkAdmin.isAdmin],userController.rolechange)
 
 module.exports = router;

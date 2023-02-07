@@ -109,15 +109,18 @@ exports.login = async (req,res,next) => {
   }
 }
 
+
+//delete
 exports.deleteByID = async ( req , res ,next )=> {
   try {
     const { id } = req.params
-    console.log(id)
     const user = await User.deleteOne({
         _id: id,
       });
     if(user.deletedCount === 0 ){
-        throw new Error("ไม่พบข้อมูลผู้ใช้งาน / ไม่พบข้อมูลผู้ใช้งาน")
+      const error = new Error("ไม่พบข้อมูลผู้ใช้งาน")
+      error.statusCode = 404
+      throw error
     }else{
         res.status(200).json({
             message: "ลบข้อมูลเรียบร้อย",
@@ -125,9 +128,33 @@ exports.deleteByID = async ( req , res ,next )=> {
     }
 
 
-} catch (error) {
-  res.status(400).json({
-    message: "เกิดข้อผิดพลาด " + error.message,
-  });
-}
+  } catch (error) {
+    next(error)
+  }
+ }
+
+ exports.rolechange = async ( req , res ,next )=> {
+  try {
+    const { id } = req.params
+    const { role } = req.body
+    console.log(role)
+    const user = await User.findById({
+        _id: id,
+      });
+    if(!user){
+        const error = new Error("ไม่พบข้อมูลผู้ใช้งาน / ไม่พบข้อมูลผู้ใช้งาน")
+        error.statusCode = 404
+        throw error
+    }
+    const data = await User.findByIdAndUpdate({_id:id},{
+       role : role
+    }) 
+    res.status(200).json({
+      message : "อัพเดตข้อมูลเรียบร้อย"
+    })
+
+
+  } catch (error) {
+    next(error)
+  }
  }
