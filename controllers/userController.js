@@ -7,27 +7,27 @@ const config = require('../config/index')
 exports.index = (req, res, next) => {
   // res.send('Hello with a resource');
   res.status(200).json({
-    register : "/register",
-    login : "/login"
+    register: "/register",
+    login: "/login"
   });
 };
 
 
 // get users
-exports.show = async (req , res ,next) => { 
- try {
-  const data = await User.find();
+exports.show = async (req, res, next) => {
+  try {
+    const data = await User.find();
     res.status(200).json({
-      Data : data
+      Data: data
     })
- } catch (error) {
-  next(error);
- }
+  } catch (error) {
+    next(error);
+  }
 }
 
 
 //register
-exports.register = async (req , res ,next )=>{
+exports.register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
@@ -63,7 +63,7 @@ exports.register = async (req , res ,next )=>{
 }
 
 //login
-exports.login = async (req,res,next) => {
+exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -86,7 +86,7 @@ exports.login = async (req,res,next) => {
 
     //check password
     const isValid = await user.checkPassword(password)
-    if(!isValid){
+    if (!isValid) {
       const error = new Error("รหัสผ่านไม่ถูกต้อง")
       error.statusCode = 401
       throw error
@@ -94,13 +94,13 @@ exports.login = async (req,res,next) => {
 
     //create token
     const token = await jwt.sign({
-      id:user._id,
-      role:user.role
-    },config.SECRET_KEY,{expiresIn: "5 days"})
+      id: user._id,
+      role: user.role
+    }, config.SECRET_KEY, { expiresIn: "5 days" })
     const expire_in = jwt.decode(token)
 
     res.status(201).json({
-      access_token:token,
+      access_token: token,
       expire_in: expire_in.exp,
       token_type: 'Bearer'
     });
@@ -111,50 +111,50 @@ exports.login = async (req,res,next) => {
 
 
 //delete
-exports.deleteByID = async ( req , res ,next )=> {
+exports.deleteByID = async (req, res, next) => {
   try {
     const { id } = req.params
     const user = await User.deleteOne({
-        _id: id,
-      });
-    if(user.deletedCount === 0 ){
+      _id: id,
+    });
+    if (user.deletedCount === 0) {
       const error = new Error("ไม่พบข้อมูลผู้ใช้งาน")
       error.statusCode = 404
       throw error
-    }else{
-        res.status(200).json({
-            message: "ลบข้อมูลเรียบร้อย",
-          });
+    } else {
+      res.status(200).json({
+        message: "ลบข้อมูลเรียบร้อย",
+      });
     }
 
 
   } catch (error) {
     next(error)
   }
- }
+}
 
- exports.rolechange = async ( req , res ,next )=> {
+exports.rolechange = async (req, res, next) => {
   try {
     const { id } = req.params
     const { role } = req.body
     console.log(role)
     const user = await User.findById({
-        _id: id,
-      });
-    if(!user){
-        const error = new Error("ไม่พบข้อมูลผู้ใช้งาน / ไม่พบข้อมูลผู้ใช้งาน")
-        error.statusCode = 404
-        throw error
+      _id: id,
+    });
+    if (!user) {
+      const error = new Error("ไม่พบข้อมูลผู้ใช้งาน / ไม่พบข้อมูลผู้ใช้งาน")
+      error.statusCode = 404
+      throw error
     }
-    const data = await User.findByIdAndUpdate({_id:id},{
-       role : role
-    }) 
+    const data = await User.findByIdAndUpdate({ _id: id }, {
+      role: role
+    })
     res.status(200).json({
-      message : "อัพเดตข้อมูลเรียบร้อย"
+      message: "อัพเดตข้อมูลเรียบร้อย"
     })
 
 
   } catch (error) {
     next(error)
   }
- }
+}

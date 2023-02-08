@@ -20,7 +20,7 @@ var brandRouter = require('./routes/brand');
 var app = express();
 
 //connect Mongoose
-mongoose.connect( config.MONGODB_URI , {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,7 +28,7 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json({
-  limit : "50mb"
+  limit: "50mb"
 }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -39,7 +39,7 @@ app.use(passport.initialize());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/brand',brandRouter);
+app.use('/brand', brandRouter);
 
 
 app.use(errorHandler)

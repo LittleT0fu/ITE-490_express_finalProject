@@ -10,16 +10,16 @@ opts.secretOrKey = config.SECRET_KEY;
 //ไม่ได้ใใช้งาน 2 บรรทัดล่าง
 // opts.issuer = 'accounts.examplesoft.com';
 // opts.audience = 'yoursite.net';
-passport.use(new JwtStrategy(opts, async (jwt_payload, done)=> {
+passport.use(new JwtStrategy(opts, async (jwt_payload, done) => {
 
     try {
         const user = await User.findById(jwt_payload.id)
-        if(!user){
+        if (!user) {
             //ส่งค่า error ไมเพราะไม่พบผู้ใช้งานและส่งค่าว่างออกไป
-            return done(new Error("ไม่พบผู้ใช้งาน"),null)
+            return done(new Error("ไม่พบผู้ใช้งาน"), null)
         }
         // มี user ส่ง error เป็น null และส่ง User ออกไป
-        return done(null,user);
+        return done(null, user);
     } catch (error) {
         done(error);
     }
@@ -38,4 +38,4 @@ passport.use(new JwtStrategy(opts, async (jwt_payload, done)=> {
 }));
 
 // การใช้งาน ถ้าไม่มีการ login ให้ session เป็น false
-module.exports.isLogin = passport.authenticate('jwt',{session : false})
+module.exports.isLogin = passport.authenticate('jwt', { session: false })

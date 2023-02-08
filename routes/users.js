@@ -15,25 +15,25 @@ const checkAdmin = require('../middleWare/checkAdmin')
 router.get('/', userController.index);
 
 //get all user
-router.get('/get',[passportJWT.isLogin , checkAdmin.isAdmin] , userController.show);
+router.get('/get', [passportJWT.isLogin, checkAdmin.isAdmin], userController.show);
 
 //register
-router.post('/register',[
+router.post('/register', [
     body('name').not().isEmpty().withMessage("กรุณาป้อนชื่อด้วย"),
     body('email').not().isEmpty().withMessage("กรุณาป้อนอีเมลล์").isEmail().withMessage("รูปแบบอีเมลล์ไม่ถูกต้อง"),
-    body('password').not().isEmpty().withMessage("กรณาใส่พาสเวิร์ด").isLength({min :  5}).withMessage("รหัสผ่านต้องมีค่ามากกว่า 5 ตัวอักษรขึ้นไป")
-],userController.register)
+    body('password').not().isEmpty().withMessage("กรณาใส่พาสเวิร์ด").isLength({ min: 5 }).withMessage("รหัสผ่านต้องมีค่ามากกว่า 5 ตัวอักษรขึ้นไป")
+], userController.register)
 
 //login
-router.post('/login' ,[
+router.post('/login', [
     body('email').not().isEmpty().withMessage("กรุณาป้อนอีเมลล์").isEmail().withMessage("รูปแบบอีเมลล์ไม่ถูกต้อง"),
     body('password').not().isEmpty().withMessage("กรณาใส่พาสเวิร์ด")
-],userController.login)
+], userController.login)
 
 //delete by id
-router.delete('/delete'+'/:id',[passportJWT.isLogin,checkAdmin.isAdmin],userController.deleteByID)
+router.delete('/delete' + '/:id', [passportJWT.isLogin, checkAdmin.isAdmin], userController.deleteByID)
 
 //role changer
-router.put('/role'+'/:id',[passportJWT.isLogin,checkAdmin.isAdmin],userController.rolechange)
+router.put('/role' + '/:id', [passportJWT.isLogin, checkAdmin.isAdmin], userController.rolechange)
 
 module.exports = router;
