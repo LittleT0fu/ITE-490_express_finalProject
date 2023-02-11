@@ -1,4 +1,5 @@
 const Brand = require("../models/brandModel");
+const Clothes = require("../models/clothesModel");
 const { validationResult } = require('express-validator');
 
 exports.index = async (req, res, next) => {
@@ -13,7 +14,7 @@ exports.index = async (req, res, next) => {
 };
 
 
-exports.add = async (req, res, next) => {
+exports.addbrand = async (req, res, next) => {
   try {
     const { brand_name } = req.body;
     console.log(brand_name)
@@ -59,7 +60,7 @@ exports.add = async (req, res, next) => {
 }
 
 
-exports.destroy = async (req, res, next) => {
+exports.destroybrand = async (req, res, next) => {
   try {
     const { id } = req.params
 
@@ -79,3 +80,63 @@ exports.destroy = async (req, res, next) => {
   }
 };
 
+
+exports.tops = async (req, res, next) => {
+  const menu = await Clothes.find({ clothesType: "tops" }).populate('shop');
+  console.log(menu);
+
+  res.status(200).json({
+    data: menu,
+  });
+};
+
+
+exports.addclothes = async (req, res, next) => {
+  try {
+    const { clothesName, clothesType, brand_name } = req.body;
+    console.log(clothesName)
+
+    // if(brand_name === ""){
+    //   const error = new Error("กรุณาใส่ชื่อ")
+    //   error.statusCode = 422  // common validation
+    //   error.validation = errors.array()
+    //   throw error
+    // }
+
+
+    //check input empty
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error("อะไรสักอย่างผิดแหละ")
+      error.statusCode = 422  // common validation
+      error.validation = errors.array()
+      throw error
+    }
+
+    //check exist brand name
+    const brandName = await Brand.findOne({ brand_name: brand_name })
+    console.log(brandName._id)
+    const brandID = brandName._id
+    if (!brandName) {
+      const error = new Error('ไม่พบชื่อแบรนด์นี้ในระบบ');
+      error.statusCode = 400;
+      throw error
+    }
+
+    //save
+    let clothes = new Clothes({
+      clothesName: clothesName,
+      clothesType: clothesType,
+      brand_name: brandID
+    });
+    clothes.save();
+
+
+    res.status(201).json({
+      messege: "ลงทะเบียนเรียบร้อย",
+    });
+
+  } catch (error) {
+    next(error);
+  }
+}

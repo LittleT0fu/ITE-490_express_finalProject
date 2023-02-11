@@ -10,13 +10,21 @@ const checkAdmin = require('../middleWare/checkAdmin');
 
 
 router.get('/', brandController.index);
+router.get('/brand' + '/tops', brandController.tops);
 
-router.post('/add',[
+router.post('/add', [
     body('brand_name').notEmpty().withMessage("กรุณากรอกชื่อแบรนด์")
-], brandController.add);
+], brandController.addbrand);
+
+router.post('/clothes' + '/add', [
+    body('clothesName').not().isEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า"),
+    body('clothesType').notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า"),
+    body('brand_name').notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า")
+], brandController.addclothes);
 
 
-router.delete('/delete'+'/:id',[passportJWT.isLogin, checkAdmin.isAdmin], brandController.destroy);
+
+router.delete('/delete' + '/:id', [passportJWT.isLogin, checkAdmin.isAdmin], brandController.destroybrand);
 
 
 module.exports = router;

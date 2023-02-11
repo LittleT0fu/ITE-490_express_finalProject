@@ -47,6 +47,8 @@ exports.register = async (req, res, next) => {
       error.statusCode = 400
       throw error
     }
+
+    //save
     let user = new User();
     user.name = name;
     user.email = email;
