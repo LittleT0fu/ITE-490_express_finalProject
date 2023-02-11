@@ -10,7 +10,7 @@ const checkAdmin = require('../middleWare/checkAdmin');
 
 
 router.get('/', brandController.index);
-router.get('/brand' + '/tops', brandController.tops);
+// router.get('/brand' + '/tops', brandController.tops);
 
 router.post('/add', [
     body('brand_name').notEmpty().withMessage("กรุณากรอกชื่อแบรนด์")

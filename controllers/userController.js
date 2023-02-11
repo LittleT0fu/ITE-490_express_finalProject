@@ -54,7 +54,7 @@ exports.register = async (req, res, next) => {
     user.email = email;
     user.password = await user.encryptPassword(password);  //encrypt password
 
-    await user.save();
+    await user.save().then;
 
     res.status(201).json({
       messege: "ลงทะเบียนเรียบร้อย",

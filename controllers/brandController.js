@@ -4,7 +4,7 @@ const { validationResult } = require('express-validator');
 
 exports.index = async (req, res, next) => {
   try {
-    const data = await Brand.find();
+    const data = await Brand.find().populate('clothes');
     res.status(200).json({
       Data: data
     })
@@ -115,8 +115,6 @@ exports.addclothes = async (req, res, next) => {
 
     //check exist brand name
     const brandName = await Brand.findOne({ brand_name: brand_name })
-    console.log(brandName._id)
-    const brandID = brandName._id
     if (!brandName) {
       const error = new Error('ไม่พบชื่อแบรนด์นี้ในระบบ');
       error.statusCode = 400;
@@ -127,7 +125,7 @@ exports.addclothes = async (req, res, next) => {
     let clothes = new Clothes({
       clothesName: clothesName,
       clothesType: clothesType,
-      brand_name: brandID
+      brand_name: brandName._id
     });
     clothes.save();
 
