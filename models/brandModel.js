@@ -17,5 +17,5 @@ brandSchema.virtual('clothes', {
     foreignField: 'brand_name', //ต้องเป็นชื่เดียวกับฟิลด์ที่จะอ้างอิง
 });
 
-const brand = mongoose.model("Brand", brandSchema);
+const brand = mongoose.model("brand", brandSchema);
 module.exports = brand;

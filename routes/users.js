@@ -19,9 +19,9 @@ router.get('/get', [passportJWT.isLogin, checkAdmin.isAdmin], userController.sho
 
 //register
 router.post('/register', [
-    body('name').not().isEmpty().withMessage("กรุณาป้อนชื่อด้วย"),
-    body('email').not().isEmpty().withMessage("กรุณาป้อนอีเมลล์").isEmail().withMessage("รูปแบบอีเมลล์ไม่ถูกต้อง"),
-    body('password').not().isEmpty().withMessage("กรณาใส่พาสเวิร์ด").isLength({ min: 5 }).withMessage("รหัสผ่านต้องมีค่ามากกว่า 5 ตัวอักษรขึ้นไป")
+    body('name').not().isEmpty().withMessage("กรุณาป้อนชื่อด้วย").custom(value => !/\s/.test(value)).withMessage("ห้ามใช้ช่องว่างในการลงทะเบียน"),
+    body('email').not().isEmpty().withMessage("กรุณาป้อนอีเมลล์").isEmail().withMessage("รูปแบบอีเมลล์ไม่ถูกต้อง").custom(value => !/\s/.test(value)).withMessage("ห้ามใช้ช่องว่างในการลงทะเบียน"),
+    body('password').not().isEmpty().withMessage("กรณาใส่พาสเวิร์ด").isLength({ min: 5 }).withMessage("รหัสผ่านต้องมีค่ามากกว่า 5 ตัวอักษรขึ้นไป").custom(value => !/\s/.test(value)).withMessage("ห้ามใช้ช่องว่างในการลงทะเบียน")
 ], userController.register)
 
 //login

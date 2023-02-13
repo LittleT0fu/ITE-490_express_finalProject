@@ -10,15 +10,17 @@ const checkAdmin = require('../middleWare/checkAdmin');
 
 
 router.get('/', brandController.index);
+router.get('/clothes', brandController.getClothes);
+
 // router.get('/brand' + '/tops', brandController.tops);
 
 router.post('/add', [
-    body('brand_name').notEmpty().withMessage("กรุณากรอกชื่อแบรนด์")
+    body('brand_name').notEmpty().withMessage("กรุณากรอกชื่อแบรนด์").custom(value => !/\s/.test(value)).withMessage("ห้ามใช้ช่องว่างในการลงทะเบียน")
 ], brandController.addbrand);
 
 router.post('/clothes' + '/add', [
-    body('clothesName').not().isEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า"),
-    body('clothesType').notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า"),
+    body('clothesName').not().isEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า").custom(value => !/\s/.test(value)).withMessage("ห้ามใช้ช่องว่างในการลงทะเบียน"),
+    body('clothesType').notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า").custom(value => !/\s/.test(value)).withMessage("ห้ามใช้ช่องว่างในการลงทะเบียน"),
     body('brand_name').notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า")
 ], brandController.addclothes);
 

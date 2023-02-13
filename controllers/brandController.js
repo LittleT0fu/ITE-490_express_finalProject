@@ -13,21 +13,23 @@ exports.index = async (req, res, next) => {
   }
 };
 
+exports.getClothes = async (req, res, next) => {
+  try {
+    const data = await Clothes.find().populate('brand_name'); //populate ไปที่ field ที่เราต้องการ populate
+    res.status(200).json({
+      Data: data
+    })
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 exports.addbrand = async (req, res, next) => {
   try {
     const { brand_name } = req.body;
-    console.log(brand_name)
 
-    // if(brand_name === ""){
-    //   const error = new Error("กรุณาใส่ชื่อ")
-    //   error.statusCode = 422  // common validation
-    //   error.validation = errors.array()
-    //   throw error
-    // }
-
-
-    //check input empty
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error = new Error("อะไรสักอย่างผิดแหละ")
