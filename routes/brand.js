@@ -6,21 +6,30 @@ const { body } = require('express-validator');
 //middleware
 const passportJWT = require('../middleWare/passportJWT');
 const checkAdmin = require('../middleWare/checkAdmin');
+const brand = require('../models/brandModel');
 
 
-
-router.get('/', brandController.index);
+//get
+router.get('/', brandController.getBrand);
 router.get('/clothes', brandController.getClothes);
+router.get('/:id' + '/clothes', brandController.getBrandClothes)
 
 // router.get('/brand' + '/tops', brandController.tops);
 
+//add brand
 router.post('/add', [
-    body('brand_name').notEmpty().withMessage("กรุณากรอกชื่อแบรนด์").custom(value => !/\s/.test(value)).withMessage("ห้ามใช้ช่องว่างในการลงทะเบียน")
+    passportJWT.isLogin,
+    checkAdmin.isAdmin,
+    body('brand_name').trim().notEmpty().withMessage("กรุณากรอกชื่อแบรนด์"),
 ], brandController.addbrand);
 
+
+//add new clothes
 router.post('/clothes' + '/add', [
-    body('clothesName').not().isEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า").custom(value => !/\s/.test(value)).withMessage("ห้ามใช้ช่องว่างในการลงทะเบียน"),
-    body('clothesType').notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า").custom(value => !/\s/.test(value)).withMessage("ห้ามใช้ช่องว่างในการลงทะเบียน"),
+    passportJWT.isLogin,
+    checkAdmin.isAdmin,
+    body('clothesName').trim().not().isEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า"),
+    body('clothesType').trim().notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า"),
     body('brand_name').notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า")
 ], brandController.addclothes);
 

@@ -2,9 +2,10 @@ const Brand = require("../models/brandModel");
 const Clothes = require("../models/clothesModel");
 const { validationResult } = require('express-validator');
 
-exports.index = async (req, res, next) => {
+//get brand name
+exports.getBrand = async (req, res, next) => {
   try {
-    const data = await Brand.find().populate('clothes');
+    const data = await Brand.find();
     res.status(200).json({
       Data: data
     })
@@ -13,6 +14,7 @@ exports.index = async (req, res, next) => {
   }
 };
 
+//get all clothes
 exports.getClothes = async (req, res, next) => {
   try {
     const data = await Clothes.find().populate('brand_name'); //populate ไปที่ field ที่เราต้องการ populate
@@ -24,12 +26,26 @@ exports.getClothes = async (req, res, next) => {
   }
 };
 
+//get 1 brand all clothes
+exports.getBrandClothes = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    console.log(id);
+    const data = await Brand.findOne({ brand_name: id }).populate('clothes'); //populate ไปที่ field ที่เราต้องการ populate
+    res.status(200).json({
+      Data: data
+    })
+  } catch (error) {
+    next(error);
+  }
+}
 
+//add brand name
 exports.addbrand = async (req, res, next) => {
   try {
     const { brand_name } = req.body;
 
-    
+    //check validate อยู่ในหน้า route
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error = new Error("อะไรสักอย่างผิดแหละ")
@@ -66,7 +82,9 @@ exports.destroybrand = async (req, res, next) => {
   try {
     const { id } = req.params
 
+    //Delete Brand one by id
     const deletedBrand = await Brand.deleteOne({ _id: id })
+    //check delete complete
     if (deletedBrand.deletedCount === 0) {
       const error = new Error("ไม่พบข้อมูลผู้ใช้งาน")
       error.statusCode = 404
@@ -83,28 +101,11 @@ exports.destroybrand = async (req, res, next) => {
 };
 
 
-exports.tops = async (req, res, next) => {
-  const menu = await Clothes.find({ clothesType: "tops" }).populate('shop');
-  console.log(menu);
-
-  res.status(200).json({
-    data: menu,
-  });
-};
-
-
 exports.addclothes = async (req, res, next) => {
   try {
+
+    //destructure
     const { clothesName, clothesType, brand_name } = req.body;
-    console.log(clothesName)
-
-    // if(brand_name === ""){
-    //   const error = new Error("กรุณาใส่ชื่อ")
-    //   error.statusCode = 422  // common validation
-    //   error.validation = errors.array()
-    //   throw error
-    // }
-
 
     //check input empty
     const errors = validationResult(req);
@@ -131,7 +132,7 @@ exports.addclothes = async (req, res, next) => {
     });
     clothes.save();
 
-
+    //response
     res.status(201).json({
       messege: "ลงทะเบียนเรียบร้อย",
     });
