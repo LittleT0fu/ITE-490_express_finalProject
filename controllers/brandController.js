@@ -43,7 +43,7 @@ exports.getBrandClothes = async (req, res, next) => {
   try {
     const { id } = req.params
     console.log(id);
-    const data = await Brand.findOne({ brand_name: id.toLowerCase }).populate('clothes'); //populate ไปที่ field ที่เราต้องการ populate
+    const data = await Brand.findOne({ brand_name: id.toLowerCase() }).populate('clothes'); //populate ไปที่ field ที่เราต้องการ populate
     res.status(200).json({
       Data: data
     })
@@ -142,7 +142,7 @@ exports.destroybrand = async (req, res, next) => {
     const { id } = req.params
 
     //Delete Brand one by id
-    const deletedBrand = await Brand.deleteOne({ _id: id })
+    const deletedBrand = await Clothes.deleteOne({ _id: id })
     //check delete complete
     if (deletedBrand.deletedCount === 0) {
       const error = new Error("ไม่พบข้อมูลผู้ใช้งาน")
