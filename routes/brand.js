@@ -6,7 +6,6 @@ const { body } = require('express-validator');
 //middleware
 const passportJWT = require('../middleWare/passportJWT');
 const checkAdmin = require('../middleWare/checkAdmin');
-const brand = require('../models/brandModel');
 
 
 //get
@@ -28,15 +27,15 @@ router.post('/add', [
 //add new clothes
 router.post('/clothes' + '/add', [
     passportJWT.isLogin,
-    checkAdmin.isAdmin,
     body('clothesName').toLowerCase().trim().not().isEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า"),
     body('clothesType').toLowerCase().trim().notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า"),
     body('brand_name').toLowerCase().trim().notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า")
 ], brandController.addclothes);
 
 
-
+//destroy brand
 router.delete('/delete' + '/:id', [passportJWT.isLogin, checkAdmin.isAdmin], brandController.destroybrand);
+router.delete('/delete/clothes' + '/:id', [passportJWT.isLogin, checkAdmin.isAdmin], brandController.destroyclothes);
 
 
 module.exports = router;

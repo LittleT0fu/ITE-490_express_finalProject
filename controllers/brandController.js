@@ -90,29 +90,8 @@ exports.addbrand = async (req, res, next) => {
 }
 
 
-exports.destroybrand = async (req, res, next) => {
-  try {
-    const { id } = req.params
 
-    //Delete Brand one by id
-    const deletedBrand = await Brand.deleteOne({ _id: id })
-    //check delete complete
-    if (deletedBrand.deletedCount === 0) {
-      const error = new Error("ไม่พบข้อมูลผู้ใช้งาน")
-      error.statusCode = 404
-      throw error
-    } else {
-      res.status(200).json({
-        message: "ลบข้อมูลเรียบร้อย",
-      });
-    }
-
-  } catch (error) {
-    next(error);
-  }
-};
-
-
+//add clothes
 exports.addclothes = async (req, res, next) => {
   try {
 
@@ -153,3 +132,52 @@ exports.addclothes = async (req, res, next) => {
     next(error);
   }
 }
+
+
+
+
+//destroy brand
+exports.destroybrand = async (req, res, next) => {
+  try {
+    const { id } = req.params
+
+    //Delete Brand one by id
+    const deletedBrand = await Brand.deleteOne({ _id: id })
+    //check delete complete
+    if (deletedBrand.deletedCount === 0) {
+      const error = new Error("ไม่พบข้อมูลผู้ใช้งาน")
+      error.statusCode = 404
+      throw error
+    } else {
+      res.status(200).json({
+        message: "ลบข้อมูลเรียบร้อย",
+      });
+    }
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+//destroy brand
+exports.destroyclothes = async (req, res, next) => {
+  try {
+    const { id } = req.params
+
+    //Delete Brand one by id
+    const deletedClothes = await Clothes.deleteOne({ _id: id })
+    //check delete complete
+    if (deletedClothes.deletedCount === 0) {
+      const error = new Error("ไม่พบข้อมูลผู้ใช้งาน")
+      error.statusCode = 404
+      throw error
+    } else {
+      res.status(200).json({
+        message: "ลบข้อมูลเรียบร้อย",
+      });
+    }
+
+  } catch (error) {
+    next(error);
+  }
+};
