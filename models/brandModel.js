@@ -5,7 +5,7 @@ const clothes = require('./clothesModel')
 const brandSchema = new Schema({
     brand_name: { type: String, require: true, trim: true }
 }, {
-    toJSON: { virtuals: true },
+    toJSON: { virtuals: true },//อนุญาติให้ส่งข้อมูลเป็นประเภท json ได้
     timestamps: true,
     collection: "brand"
 })
