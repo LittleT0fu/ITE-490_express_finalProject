@@ -4,14 +4,6 @@ const jwt = require('jsonwebtoken')
 const config = require('../config/index')
 
 
-exports.index = (req, res, next) => {
-  // res.send('Hello with a resource');
-  res.status(200).json({
-    register: "/register",
-    login: "/login"
-  });
-};
-
 
 // get users
 exports.show = async (req, res, next) => {
@@ -24,6 +16,8 @@ exports.show = async (req, res, next) => {
     next(error);
   }
 }
+
+
 
 
 //register
@@ -54,7 +48,7 @@ exports.register = async (req, res, next) => {
     user.email = email;
     user.password = await user.encryptPassword(password);  //encrypt password
 
-    await user.save().then;
+    await user.save();
 
     res.status(201).json({
       messege: "ลงทะเบียนเรียบร้อย",
@@ -135,22 +129,27 @@ exports.deleteByID = async (req, res, next) => {
   }
 }
 
+
+//UPDATE ROLE
 exports.rolechange = async (req, res, next) => {
   try {
     const { id } = req.params
     const { role } = req.body
-    console.log(role)
+    // console.log(role)
     const user = await User.findById({
       _id: id,
     });
+    //check user exist
     if (!user) {
-      const error = new Error("ไม่พบข้อมูลผู้ใช้งาน / ไม่พบข้อมูลผู้ใช้งาน")
+      const error = new Error("ไม่พบข้อมูลผู้ใช้งาน")
       error.statusCode = 404
       throw error
     }
+    //update
     const data = await User.findByIdAndUpdate({ _id: id }, {
       role: role
     })
+    //respone
     res.status(200).json({
       message: "อัพเดตข้อมูลเรียบร้อย"
     })

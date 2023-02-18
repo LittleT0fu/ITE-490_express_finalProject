@@ -12,7 +12,8 @@ const brand = require('../models/brandModel');
 //get
 router.get('/', brandController.getBrand);
 router.get('/clothes', brandController.getClothes);
-router.get('/:id' + '/clothes', brandController.getBrandClothes)
+router.get('/:id' + '/clothes', brandController.getBrandClothes);
+router.get('/clothesType' + '/:id', brandController.findClothestype);
 
 // router.get('/brand' + '/tops', brandController.tops);
 
@@ -20,7 +21,7 @@ router.get('/:id' + '/clothes', brandController.getBrandClothes)
 router.post('/add', [
     passportJWT.isLogin,
     checkAdmin.isAdmin,
-    body('brand_name').trim().notEmpty().withMessage("กรุณากรอกชื่อแบรนด์"),
+    body('brand_name').toLowerCase().trim().notEmpty().withMessage("กรุณากรอกชื่อแบรนด์"),
 ], brandController.addbrand);
 
 
@@ -28,9 +29,9 @@ router.post('/add', [
 router.post('/clothes' + '/add', [
     passportJWT.isLogin,
     checkAdmin.isAdmin,
-    body('clothesName').trim().not().isEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า"),
-    body('clothesType').trim().notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า"),
-    body('brand_name').notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า")
+    body('clothesName').toLowerCase().trim().not().isEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า"),
+    body('clothesType').toLowerCase().trim().notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า"),
+    body('brand_name').toLowerCase().trim().notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า")
 ], brandController.addclothes);
 
 

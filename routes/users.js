@@ -12,8 +12,6 @@ const checkAdmin = require('../middleWare/checkAdmin')
 //   res.send('respond with a resource');
 // });
 
-router.get('/', userController.index);
-
 //get all user
 router.get('/get', [passportJWT.isLogin, checkAdmin.isAdmin], userController.show);
 
@@ -26,8 +24,8 @@ router.post('/register', [
 
 //login
 router.post('/login', [
-    body('email').not().isEmpty().withMessage("กรุณาป้อนอีเมลล์").isEmail().withMessage("รูปแบบอีเมลล์ไม่ถูกต้อง"),
-    body('password').not().isEmpty().withMessage("กรณาใส่พาสเวิร์ด")
+    body('email').trim().not().isEmpty().withMessage("กรุณาป้อนอีเมลล์").isEmail().withMessage("รูปแบบอีเมลล์ไม่ถูกต้อง"),
+    body('password').trim().not().isEmpty().withMessage("กรณาใส่พาสเวิร์ด")
 ], userController.login)
 
 //delete by id

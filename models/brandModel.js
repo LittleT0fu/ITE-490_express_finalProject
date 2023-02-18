@@ -12,7 +12,7 @@ const brandSchema = new Schema({
 
 
 brandSchema.virtual('clothes', {
-    ref: 'Clothes', //ชื่อเดียวกับชื่อ Shemaที่่ Export
+    ref: 'Clothes', //ชื่อเดียวกับชื่อ Shema ที่ Export
     localField: '_id',
     foreignField: 'brand_name', //ต้องเป็นชื่เดียวกับฟิลด์ที่จะอ้างอิง
 });
