@@ -106,6 +106,13 @@ exports.addclothes = async (req, res, next) => {
       throw error
     }
 
+    const existClothes = await Clothes.findOne({ clothesName: clothesName })
+    if (existClothes) {
+      const error = new Error('มีชื่อเสื้อผ้านี้ในระบบอยู๋แล้ว');
+      error.statusCode = 400;
+      throw error
+    }
+
     //check exist brand name
     const brandName = await Brand.findOne({ brand_name: brand_name })
     if (!brandName) {
