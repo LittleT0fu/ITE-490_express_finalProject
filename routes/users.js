@@ -13,7 +13,7 @@ const checkAdmin = require('../middleWare/checkAdmin')
 // });
 
 //get all user
-router.get('/get', [passportJWT.isLogin, checkAdmin.isAdmin], userController.show);
+router.get('/get', [passportJWT.isLogin], userController.show);
 
 //register
 router.post('/register', [

@@ -28,8 +28,8 @@ router.post('/add', [
 router.post('/clothes' + '/add', [
     passportJWT.isLogin,
     body('clothesName').toLowerCase().trim().not().isEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า"),
-    body('clothesType').toLowerCase().trim().notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า"),
-    body('brand_name').toLowerCase().trim().notEmpty().withMessage("กรุณากรอกชื่อเสื้อผ้า")
+    body('clothesType').toLowerCase().trim().notEmpty().withMessage("กรุณากรอกประเภทเสื้อผ้า"),
+    body('brand_name').toLowerCase().trim().notEmpty().withMessage("กรุณากรอกแบรนของเสื้อผ้าเสื้อผ้า")
 ], brandController.addclothes);
 
 

@@ -8,7 +8,14 @@ const config = require('../config/index')
 // get users
 exports.show = async (req, res, next) => {
   try {
-    const data = await User.find();
+    const { role } = req.user
+    if (role === 'admin') {
+      const data = await User.find();
+      res.status(200).json({
+        Data: data
+      })
+    }
+    const data = await User.find({ role: 'staff' });
     res.status(200).json({
       Data: data
     })
@@ -135,7 +142,6 @@ exports.rolechange = async (req, res, next) => {
   try {
     const { id } = req.params
     const { role } = req.body
-    // console.log(role)
     const user = await User.findById({
       _id: id,
     });

@@ -8,7 +8,7 @@ const userSchema = new Schema({
   name: { type: String, require: true, trim: true },
   email: { type: String, require: true, trim: true, unique: true, index: true, },
   password: { type: String, require: true, trim: true, minlength: 5 },
-  role: { type: String, default: 'member' }
+  role: { type: String, default: 'staff' }
 }, { collection: "users" });
 
 
