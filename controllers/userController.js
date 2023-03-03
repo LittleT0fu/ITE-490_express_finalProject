@@ -74,7 +74,7 @@ exports.login = async (req, res, next) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("อะไรสักอย่างผิดแหละ")
+      const error = new Error("มีบางข้อมูลใส่ไม่ครบ")
       error.statusCode = 422  // common validation
       error.validation = errors.array()
       throw error
